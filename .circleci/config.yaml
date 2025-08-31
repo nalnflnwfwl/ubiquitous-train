@@ -1,0 +1,22 @@
+version: 2.1
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.11.10
+    steps:
+      - checkout
+      - run:
+         name: Run tests
+         command: python -m unittest test_app.py
+  
+workflows:
+  main-workflow:
+    jobs:
+      - build-and-test
+    triggers:
+      - schedule:
+          cron: "15 8 * * *" #time UTC
+          filters:
+            branches:
+              only:
+                - main
